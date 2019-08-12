@@ -35,15 +35,17 @@ s = sched.scheduler(time.time, time.sleep)
 def do_something(): 
     global keep_run
     cnt = 0
+    tw1 = twitchapp
+    tw2 = twitchapp
     while keep_run:
         cnt = cnt + 1
         print('checking' + str(cnt))
-        state = twitchapp.get_streams('nana803')
+        state = tw2.get_streams('nana803')
         #if state:
         #    line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
         #    time.sleep(10)
             
-        state1 = twitchapp.get_streams('inkwei0108')
+        state1 = tw1.get_streams('inkwei0108')
         if state and state1:
             message = state + '/n' + state1
             line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(message))
