@@ -18,6 +18,8 @@ from oauth2client.service_account import ServiceAccountCredentials as SAC
 import user_id_app, drinks_app, porn_app, movie_app, user_proccess, theater_app, bus_app, train_app, feebee, earthquake, twitchapp
 from bs4 import BeautifulSoup
 from threading import Timer
+del sys.modules['twitchapp']
+import twitchapp as tw1
 
 groupid = ''
 
@@ -35,12 +37,10 @@ s = sched.scheduler(time.time, time.sleep)
 def do_something(): 
     global keep_run
     cnt = 0
-    tw1 = twitchapp()
-    tw2 = twitchapp()
     while keep_run:
         cnt = cnt + 1
         print('checking' + str(cnt))
-        state = tw2.get_streams('nana803')
+        state = twitchapp.get_streams('nana803')
         #if state:
         #    line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
         #    time.sleep(10)
