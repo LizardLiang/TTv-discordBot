@@ -18,7 +18,6 @@ from oauth2client.service_account import ServiceAccountCredentials as SAC
 import user_id_app, drinks_app, porn_app, movie_app, user_proccess, theater_app, bus_app, train_app, feebee, earthquake, twitchapp
 from bs4 import BeautifulSoup
 from threading import Timer
-from twitchapp import tw1, tw2
 
 groupid = ''
 
@@ -36,6 +35,8 @@ s = sched.scheduler(time.time, time.sleep)
 def do_something(): 
     global keep_run
     cnt = 0
+    tw1 = twitchapp()
+    tw2 = twitchapp()
     while keep_run:
         cnt = cnt + 1
         print('checking' + str(cnt))
