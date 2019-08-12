@@ -47,7 +47,7 @@ def do_something():
             
         state1 = tw1.get_streams('inkwei0108')
         if state and state1:
-            message = state + '/n' + state1
+            message = state + '\n' + state1
             line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(message))
         elif state1:
             message = state1
