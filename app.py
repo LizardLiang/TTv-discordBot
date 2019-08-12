@@ -39,13 +39,19 @@ def do_something():
         cnt = cnt + 1
         print('checking' + str(cnt))
         state = twitchapp.get_streams('nana803')
-        if state:
-            line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
-            time.sleep(10)
+        #if state:
+        #    line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
+        #    time.sleep(10)
             
-        state = twitchapp.get_streams('inkwei0108')
-        if state:
-            line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
+        state1 = twitchapp.get_streams('inkwei0108')
+        if state and state1:
+            message = state + '/n' + state1
+        elif state1:
+            message = state1
+        elif state:
+            message = state
+        
+        line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(message))
         # do your stuff
         time.sleep(10)
 
