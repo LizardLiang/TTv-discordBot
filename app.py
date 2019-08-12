@@ -41,6 +41,7 @@ def do_something():
         state = twitchapp.get_streams('nana803')
         if state:
             line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
+            time.sleep(10)
             
         state = twitchapp.get_streams('inkwei0108')
         if state:
