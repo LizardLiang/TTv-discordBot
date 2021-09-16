@@ -1,50 +1,78 @@
 from threading import Timer
-import twitchapp
+from threading import *
 import os
+import sys
 import threading
-del sys.modules['twitchapp']
+import discord
+import time
+import requests
+import asyncio
+from dotenv import load_dotenv
 
-groupid = ''
-
-keep_run = True
-
-s = sched.scheduler(time.time, time.sleep)
-
-
-def do_something():
-    global keep_run
-    cnt = 0
-    while keep_run:
-        cnt = cnt + 1
-        print('checking' + str(cnt))
-        state = twitchapp.get_streams('nana803')
-        # if state:
-        #    line_bot_api.push_message('U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(state))
-        #    time.sleep(10)
-
-        state1 = tw1.get_streams('inkwei0108')
-        if state and state1:
-            message = state + '\n' + state1
-            line_bot_api.push_message(
-                'U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(message))
-        elif state1:
-            message = state1
-            line_bot_api.push_message(
-                'U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(message))
-        elif state:
-            message = state
-            line_bot_api.push_message(
-                'U58e43cf60b31e2ed4a101db4cab57fa6', TextSendMessage(message))
-
-        # do your stuff
-        time.sleep(10)
+load_dotenv()
 
 
-game_key = 0
+TOKEN = os.getenv('Discord_Token')
+ChannelName = os.getenv('OWO_Name')
+ClientID = os.getenv('Client_id')
+ClientSecret = os.getenv('Client_secret')
+TTvToken = os.getenv('TTv-Token')
+
+client = discord.Client()
+
+
+@client.event
+async def on_ready():
+    channel = await client.fetch_channel(os.getenv('Channel_id'))
+    await channel.send("機器人已進入頻道")
+
+
+@client.event
+async def send_msg(embed):
+    channel = await client.fetch_channel(os.getenv('Channel_id'))
+    await channel.send(embed=embed)
+
+
+ChannelStatus = False
+
+
+async def Check_Online():
+    global ChannelStatus
+    await client.wait_until_ready()
+
+    while True:
+        result = requests.get(
+            url="https://api.twitch.tv/helix/streams?user_login=" + ChannelName, headers={
+                "Client-Id": ClientID,
+                "authorization": "Bearer " + TTvToken
+            })
+
+        try:
+            data = result.json()["data"][0]
+            GameName = data["game_name"]
+
+            if not ChannelStatus and data["type"] == 'live':
+                ChannelStatus = True
+                embed = discord.Embed(
+                    title="開台啦!", description=data["user_name"] + " 已經開台拉")
+                embed.add_field(name="實況標題", value=data["title"])
+                embed.add_field(name="正在遊玩", value=GameName)
+                embed.add_field(name="觀看人數", value=data["viewer_count"])
+
+                await send_msg(embed)
+        except:
+            if ChannelStatus:
+                ChannelStatus = False
+                embed = discord.Embed(
+                    title="悲報!", description="OWO主播 已經關台了"
+                )
+
+                await send_msg(embed)
+
+        await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    t = threading.Thread(target=do_something)  # 這個就開一個新的thread 讓他自己玩得爽
-    t.start()
-    app.run(host='0.0.0.0', port=port)
+    # Check_Online()
+    client.loop.create_task(Check_Online())
+    client.run(TOKEN)
