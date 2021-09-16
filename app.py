@@ -23,7 +23,6 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-    print("Should say hello")
     channel = await client.fetch_channel(os.getenv('Channel_id'))
     await channel.send("機器人已進入頻道")
 
@@ -74,7 +73,6 @@ async def Check_Online():
 
 
 if __name__ == "__main__":
-    print("Is this working?")
     # Check_Online()
     client.loop.create_task(Check_Online())
     client.run(TOKEN)
