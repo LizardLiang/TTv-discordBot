@@ -23,6 +23,7 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
+    print("Should say hello")
     channel = await client.fetch_channel(os.getenv('Channel_id'))
     await channel.send("機器人已進入頻道")
 
