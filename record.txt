@@ -1,0 +1,31 @@
+製造亂數 
+->
+import random
+random.randint(start, end)
+
+引用google api
+->
+建立服務用戶憑證 -> 會得到一個 mail address
+
+from oauth2client.service_account import ServiceAccountCredentials
+
+GDriveJSON = 'FAMAX-ef61fdf82b20.json' -> 下載憑證
+GSpreadSheet = 'line-bot' -> spreadsheet 名稱
+while True:
+    try:
+            scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+            key = ServiceAccountCredentials.from_json_keyfile_name(GDriveJSON, scope)
+            gc = gspread.authorize(key)
+            worksheet = gc.open(GSpreadSheet).worksheet("工作表2") -> 填入工作表的名稱 就可以打開該工作表
+        except Exception as ex:
+            print('無法連線Google試算表', ex)
+            sys.exit(1)
+            
+            
+user_status:
+            0  -> normal
+            1  -> search movie time table
+            
+            
+氣象平台授權碼:
+    CWB-34B859A6-E135-4A75-A4F7-0C34526588BA
