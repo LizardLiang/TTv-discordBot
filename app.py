@@ -74,6 +74,7 @@ async def Check_Online():
 
 
 if __name__ == "__main__":
+    print("Is this working?")
     # Check_Online()
     client.loop.create_task(Check_Online())
     client.run(TOKEN)
